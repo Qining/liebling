@@ -3,7 +3,7 @@
 Keep orginal theme as much as possible with the following optimization:
 
 - adding `zh-cn.json` and optimize Chinese translation;
-- integrate [tocbot](https://tscanlin.github.io/tocbot/), auto generating TOC if article includes h1, h2 or h3;
+- integrate [tocbot](https://tscanlin.github.io/tocbot/), auto generating TOC if article includes h1, h2, h3, h4;
 - adding tag description in tag page;
 - showing all tags in post if on desktop;
 

@@ -194,7 +194,7 @@ $(document).ready(() => {
 
   // generate toc
   var contentSel = '.post-content-main'
-  var headingSelector = 'h1, h2, h3'
+  var headingSelector = 'h1, h2, h3, h4'
   var headings = document.querySelector(contentSel).querySelectorAll(headingSelector)
 
   if(headings.length){
@@ -209,9 +209,9 @@ $(document).ready(() => {
       // Where to render the table of contents.
       tocSelector: '.js-toc',
       // Where to grab the headings to build the table of contents.
-      contentSelector: '.post-content-main',
+      contentSelector: contentSel,
       // Which headings to grab inside of the contentSelector element.
-      headingSelector: 'h1, h2, h3',
+      headingSelector: headingSelector,
       // For headings inside relative or absolute positioned containers within content.
       hasInnerContainers: true,
     });
