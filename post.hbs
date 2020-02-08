@@ -32,6 +32,14 @@ into the {body} of the default.hbs template --}}
               <div class="m-heading__meta">
                 {{#if primary_tag}}
                 <a href="{{primary_tag.url}}" class="m-heading__meta__tag">{{primary_tag.name}}</a>
+                <div class="only-desktop">
+                  {{#foreach tags}}
+                    {{#if @index}}
+                    <span class="m-heading__meta__divider">/</span>
+                    <a href="{{url}}" class="m-heading__meta__tag">{{name}}</a>
+                    {{/if}}
+                  {{/foreach}}
+                </div>
                 <span class="m-heading__meta__divider">&bull;</span>
                 {{/if}}
                 <span class="m-heading__meta__time">{{date published_at}}</span>
@@ -54,7 +62,17 @@ into the {body} of the default.hbs template --}}
                   </button>
                 </div>
               </div>
-              {{content}}
+
+              <div class="toc-wrapper">
+                <nav class="toc">
+                  <h4 class="toc-title">{{t "Table of Contents"}}</h4>
+                  <div class="js-toc"></div>
+                </nav>
+              </div>
+              
+              <div class="post-content-main">
+                {{content}}
+              </div>
             </div>
           </div>
         </div>

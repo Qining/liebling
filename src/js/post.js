@@ -9,6 +9,8 @@ import {
   isMobile
 } from './helpers'
 
+import tocbot from 'tocbot';
+
 let $aosWrapper = null
 let $progressCircle = null
 let lastScrollingY = window.pageYOffset
@@ -189,6 +191,35 @@ $(document).ready(() => {
 
   window.addEventListener('scroll', onScrolling, { passive: true })
   window.addEventListener('resize', onResizing, { passive: true })
+
+  // generate toc
+  var contentSel = '.post-content-main'
+  var headingSelector = 'h1, h2, h3'
+  var headings = document.querySelector(contentSel).querySelectorAll(headingSelector)
+
+  if(headings.length){
+    // todo: to avoid ghost bug: can't generate heading id if heading is other than English
+    for (var idx = 0 ; idx< headings.length; idx++){
+      var newId = headings[idx].innerHTML + '-' + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)
+      console.debug(headings[idx])
+      headings[idx].setAttribute('id', newId)
+    }
+
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.post-content-main',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h1, h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+  
+    tocbot.refresh()
+
+    document.querySelector('.toc-wrapper').style.display = 'block'
+  }
 })
 
 $(window).on('load', () => {

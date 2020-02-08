@@ -44,6 +44,7 @@
 @import "components/heading/title";
 @import "components/heading/description";
 @import "components/heading/meta";
+@import "components/articles/toc";
 @import "components/articles/article-card";
 @import "components/articles/featured-slider";
 @import "components/articles/featured-article";
@@ -68,3 +69,6 @@
 
 @import "libs/slick";
 @import "libs/aos/aos";
+
+@import '../node_modules/tocbot/src/scss/tocbot-core';
+@import '../node_modules/tocbot/src/scss/tocbot-default-theme';

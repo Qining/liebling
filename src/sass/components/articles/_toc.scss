@@ -1,0 +1,81 @@
+.toc-wrapper {
+  display: none;
+  text-align: center;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: var(--toc-background-color);
+
+  @include transition(all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1));
+
+  @include respond-to("large") {
+    position: absolute;
+    text-align: left;
+    top: 0;
+    left: -185px;
+    right: auto;
+    width: 175px;
+    height: 100%;
+  }
+
+  @include respond-to("extra-large") {
+    width: 270px;
+    left: -280px;
+  }
+
+  @include respond-to("largest") {
+    left: -300px;
+  }
+
+  h4.toc-title {
+    padding: 15px 0 0 15px;
+    margin-bottom: 25px;
+  }
+
+  .toc {
+    position: sticky;
+    top: 0px;
+    overflow: hidden;
+  }
+
+  .toc-list {
+    margin: 0;
+    padding-left: 15px;
+  }
+
+  .toc-list-item {
+    margin-bottom: 3px;
+    font-size: 80%;
+  }
+
+  .toc-link::before {
+    width: 4px;
+  }
+
+  .is-active-link::before {
+    background-color: var(--link-color);
+  }
+
+  a.is-active-link {
+    color: var(--link-color);
+  }
+
+  a.toc-link {
+    text-decoration: none;
+  }
+}
+
+.post-content-main {
+  h1::before,
+  h2::before,
+  h3::before,
+  h4::before,
+  h5::before,
+  h6::before {
+    display: block;
+    content: " ";
+    height: 60px;
+    margin-top: -60px;
+    visibility: hidden;
+  }
+}
