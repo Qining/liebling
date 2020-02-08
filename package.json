@@ -1,8 +1,8 @@
 {
   "author": {
-    "email": "this.eduardo@gmail.com",
-    "name": "Eduardo Gómez",
-    "url": "https://eduardogomez.io"
+    "email": "jerry@wjz.im",
+    "name": "Jerry Zhu",
+    "url": "https://blog.xqopen.com"
   },
   "config": {
     "posts_per_page": 9,
@@ -27,8 +27,8 @@
       }
     }
   },
-  "demo": "https://liebling.eduardogomez.io",
-  "description": "Beautiful and clean theme that is easy and comfortable to use.",
+  "demo": "https://blog.xqopen.com",
+  "description": "Beautiful and clean theme that is easy and comfortable to use. (modified version)",
   "engines": {
     "ghost": ">=2.0.0",
     "ghost-api": "v2"
@@ -49,10 +49,10 @@
     "ghost-theme"
   ],
   "license": "MIT",
-  "name": "liebling",
+  "name": "liebling-m",
   "screenshots": {
     "desktop": "assets/screenshot-desktop.jpg",
     "mobile": "assets/screenshot-mobile.jpg"
   },
-  "version": "0.6.5e"
+  "version": "0.6.5-m"
 }

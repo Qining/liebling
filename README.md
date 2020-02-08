@@ -1,3 +1,20 @@
+# Liebling-modified
+
+Keep orginal theme as much as possible with the following optimization:
+
+- adding `zh-cn.json` and optimize Chinese translation;
+- integrate [tocbot](https://tscanlin.github.io/tocbot/), auto generating TOC if article includes h1, h2 or h3;
+- adding tag description in tag page;
+- showing all tags in post if on desktop;
+
+[show me the demo](https://blog.xqopen.com)
+
+---
+
+Orignal README below
+
+---
+
 # Liebling
 
 Liebling is a beautiful and clean Ghost theme that is easy and comfortable to use. **It's free** and you can use it for any kind of content you might have. Now with dark mode 🌓!
