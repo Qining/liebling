@@ -43,6 +43,10 @@
           <span>{{reading_time minute=(t "1 min read") minutes=(t "% min read")}}</span>
           <span>&bull;</span>
           <span>{{primary_author.name}}</span>
+          <span style="display: none;">
+            <span>&bull;</span>
+            <span class="m-article-card__views m-article-card__views{{@index}}">~</span>
+          </span>
         </div>
       </a>
     </div>
