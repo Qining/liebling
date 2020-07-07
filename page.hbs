@@ -2,6 +2,11 @@
 This template is used for the posts that are marked as pages.
 --}}
 
+{{!-- This block loads specific styles for the post page --}}
+{{#contentFor "styles"}}
+  <link rel="stylesheet" type="text/css" href="{{asset "css/post.css"}}" media="screen" rel="preload" as="style" />
+{{/contentFor}}
+
 {{!-- The tag below means: insert everything in this file
 into the {body} of the default.hbs template --}}
 {{!< default}}
@@ -16,7 +21,7 @@ into the {body} of the default.hbs template --}}
     <div class="m-hero__content" data-aos="fade-down">
       <h1 class="m-hero-title bigger">{{title}}</h1>
       {{#if custom_excerpt}}
-      <p class="m-hero-description">{{custom_excerpt}}</p>
+        <p class="m-hero-description">{{custom_excerpt}}</p>
       {{/if}}
     </div>
     </section>
