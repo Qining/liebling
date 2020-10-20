@@ -1,4 +1,17 @@
 .m-tags {
+  &.in-post {
+    padding-top: 25px;
+
+    ul {
+      padding: 0;
+      list-style-type: none;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
   ul {
     display: flex;
     flex-wrap: wrap;
@@ -16,7 +29,7 @@
     }
 
     a {
-      color: var(--link-color);
+      color: var(--link-color) !important;
     }
   }
 }
