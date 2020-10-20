@@ -1,19 +1,20 @@
-import cssVars from 'css-vars-ponyfill'
 import $ from 'jquery'
-import lozad from 'lozad'
 import Headroom from "headroom.js"
-import slick from 'slick-carousel'
+import Glide, {
+  Swipe,
+  Breakpoints
+} from '@glidejs/glide/dist/glide.modular.esm'
 import tippy from 'tippy.js'
 import shave from 'shave'
 import AOS from 'aos'
-import Fuse from 'fuse.js'
+import Fuse from 'fuse.js/dist/fuse.basic.esm.min.js'
 import {
   isRTL,
   formatDate,
-  isDarkMode
+  isDarkMode,
+  isMobile,
+  getParameterByName
 } from './helpers'
-
-cssVars({})
 
 $(document).ready(() => {
   if (isRTL()) {
@@ -28,7 +29,8 @@ $(document).ready(() => {
   const $toggleSubmenu = $('.js-toggle-submenu')
   const $submenuOption = $('.js-submenu-option')[0]
   const $submenu = $('.js-submenu')
-  const $recentArticles = $('.js-recent-articles')
+  const $recentSlider = $('.js-recent-slider')
+  const $openSecondaryMenu = $('.js-open-secondary-menu')
   const $openSearch = $('.js-open-search')
   const $closeSearch = $('.js-close-search')
   const $search = $('.js-search')
@@ -36,28 +38,32 @@ $(document).ready(() => {
   const $searchResults = $('.js-search-results')
   const $searchNoResults = $('.js-no-results')
   const $toggleDarkMode = $('.js-toggle-darkmode')
+  const $closeNotification = $('.js-notification-close')
+  const $mainNav = $('.js-main-nav')
+  const $mainNavLeft = $('.js-main-nav-left')
   const currentSavedTheme = localStorage.getItem('theme')
 
   let fuse = null
   let submenuIsOpen = false
+  let secondaryMenuTippy = null
 
-  function showSubmenu() {
+  const showSubmenu = () => {
     $header.addClass('submenu-is-active')
     $toggleSubmenu.addClass('active')
     $submenu.removeClass('closed').addClass('opened')
   }
 
-  function hideSubmenu() {
+  const hideSubmenu = () => {
     $header.removeClass('submenu-is-active')
     $toggleSubmenu.removeClass('active')
     $submenu.removeClass('opened').addClass('closed')
   }
 
-  function toggleScrollVertical() {
+  const toggleScrollVertical = () => {
     $body.toggleClass('no-scroll-y')
   }
 
-  function trySearchFeature() {
+  const trySearchFeature = () => {
     if (typeof ghostSearchApiKey !== 'undefined') {
       getAllPosts(ghostHost, ghostSearchApiKey)
     } else {
@@ -67,7 +73,7 @@ $(document).ready(() => {
     }
   }
 
-  function getAllPosts(host, key) {
+  const getAllPosts = (host, key) => {
     const api = new GhostContentAPI({
       url: host,
       key,
@@ -76,22 +82,20 @@ $(document).ready(() => {
     const allPosts = []
     const fuseOptions = {
       shouldSort: true,
-      threshold: 0,
-      location: 0,
-      distance: 100,
-      tokenize: true,
-      matchAllTokens: false,
-      maxPatternLength: 32,
-      minMatchCharLength: 1,
-      keys: ['title', 'custom_excerpt', 'html']
+      ignoreLocation: true,
+      findAllMatches: true,
+      includeScore: true,
+      minMatchCharLength: 2,
+      keys: ['title', 'custom_excerpt', 'tags.name']
     }
 
     api.posts.browse({
       limit: 'all',
-      fields: 'id, title, url, published_at, custom_excerpt, html'
+      include: 'tags',
+      fields: 'id, title, url, published_at, custom_excerpt'
     })
       .then((posts) => {
-        for (var i = 0, len = posts.length; i < len; i++) {
+        for (let i = 0, len = posts.length; i < len; i++) {
           allPosts.push(posts[i])
         }
 
@@ -100,6 +104,61 @@ $(document).ready(() => {
       .catch((err) => {
         console.log(err)
       })
+  }
+
+  const showNotification = (typeNotification) => {
+    const $notification = $(`.js-alert[data-notification="${typeNotification}"]`)
+    $notification.addClass('opened')
+    setTimeout(() => {
+      closeNotification($notification)
+    }, 5000)
+  }
+
+  const closeNotification = ($notification) => {
+    $notification.removeClass('opened')
+    const url = window.location.toString()
+
+    if (url.indexOf('?') > 0) {
+      const cleanUrl = url.substring(0, url.indexOf('?'))
+      window.history.replaceState({}, document.title, cleanUrl)
+    }
+  }
+
+  const checkForActionParameter = () => {
+    const action = getParameterByName('action')
+    const stripe = getParameterByName('stripe')
+
+    if (action === 'subscribe') {
+      showNotification('subscribe')
+    }
+
+    if (action === 'signup') {
+      window.location = `${ghostHost}/signup/?action=checkout`
+    }
+
+    if (action === 'checkout') {
+      showNotification('signup')
+    }
+
+    if (action === 'signin') {
+      showNotification('signin')
+    }
+
+    if (stripe === 'success') {
+      showNotification('checkout')
+    }
+  }
+
+  const toggleDesktopTopbarOverflow = (disableOverflow) => {
+    if (!isMobile()) {
+      if (disableOverflow) {
+        $mainNav.addClass('toggle-overflow')
+        $mainNavLeft.addClass('toggle-overflow')
+      } else {
+        $mainNav.removeClass('toggle-overflow')
+        $mainNavLeft.removeClass('toggle-overflow')
+      }
+    }
   }
 
   $openMenu.click(() => {
@@ -141,15 +200,21 @@ $(document).ready(() => {
   $inputSearch.keyup(() => {
     if ($inputSearch.val().length > 0 && fuse) {
       const results = fuse.search($inputSearch.val())
+      const bestResults = results.filter((result) => {
+        if (result.score <= 0.5) {
+          return result
+        }
+      })
+
       let htmlString = ''
 
-      if (results.length > 0) {
-        for (var i = 0, len = results.length; i < len; i++) {
+      if (bestResults.length > 0) {
+        for (let i = 0, len = bestResults.length; i < len; i++) {
           htmlString += `
           <article class="m-result">\
-            <a href="${results[i].url}" class="m-result__link">\
-              <h3 class="m-result__title">${results[i].title}</h3>\
-              <span class="m-result__date">${formatDate(results[i].published_at)}</span>\
+            <a href="${bestResults[i].item.url}" class="m-result__link">\
+              <h3 class="m-result__title">${bestResults[i].item.title}</h3>\
+              <span class="m-result__date">${formatDate(bestResults[i].item.published_at)}</span>\
             </a>\
           </article>`
         }
@@ -179,12 +244,28 @@ $(document).ready(() => {
     }
   })
 
+  $toggleDarkMode.hover(() => {
+    toggleDesktopTopbarOverflow(true)
+  }, () => {
+    toggleDesktopTopbarOverflow(false)
+  })
+
+  $closeNotification.click(function () {
+    closeNotification($(this).parent())
+  })
+
   $(window).click((e) => {
     if (submenuIsOpen) {
       if ($submenuOption && !$submenuOption.contains(e.target)) {
         submenuIsOpen = false
         hideSubmenu()
       }
+    }
+  })
+
+  $(document).keyup((e) => {
+    if (e.key === 'Escape' && $search.hasClass('opened')) {
+      $closeSearch.click()
     }
   })
 
@@ -200,32 +281,63 @@ $(document).ready(() => {
     }
   }
 
-  var headerElement = document.querySelector('.js-header')
-
-  if (headerElement) {
-    var headroom = new Headroom(headerElement, {
+  if ($header.length > 0) {
+    const headroom = new Headroom($header[0], {
       tolerance: {
         down: 10,
         up: 20
       },
-      offset: 15
+      offset: 15,
+      onUnpin: () => {
+        if (!isMobile() && secondaryMenuTippy) {
+          const desktopSecondaryMenuTippy = secondaryMenuTippy[0]
+
+          if (
+            desktopSecondaryMenuTippy && desktopSecondaryMenuTippy.state.isVisible
+          ) {
+            desktopSecondaryMenuTippy.hide()
+          }
+        }
+      }
     })
     headroom.init()
   }
 
-  if ($recentArticles.length > 0) {
-    $recentArticles.on('init', function () {
+  if ($recentSlider.length > 0) {
+    const recentSlider = new Glide('.js-recent-slider', {
+      type: 'slider',
+      rewind: false,
+      perView: 4,
+      swipeThreshold: false,
+      dragThreshold: false,
+      gap: 0,
+      direction: isRTL() ? 'rtl' : 'ltr',
+      breakpoints: {
+        1024: {
+          perView: 3,
+          swipeThreshold: 80,
+          dragThreshold: 120
+        },
+        768: {
+          perView: 2,
+          swipeThreshold: 80,
+          dragThreshold: 120,
+          peek: { before: 0, after: 115 }
+        },
+        568: {
+          perView: 1,
+          swipeThreshold: 80,
+          dragThreshold: 120,
+          peek: { before: 0, after: 115 }
+        }
+      }
+    })
+
+    recentSlider.on('mount.after', () => {
       shave('.js-recent-article-title', 50)
     })
 
-    $recentArticles.slick({
-      adaptiveHeight: true,
-      arrows: false,
-      infinite: false,
-      mobileFirst: true,
-      variableWidth: true,
-      rtl: isRTL()
-    })
+    recentSlider.mount({ Swipe, Breakpoints })
   }
 
   if (typeof disableFadeAnimation === 'undefined' || !disableFadeAnimation) {
@@ -237,17 +349,29 @@ $(document).ready(() => {
     $('[data-aos]').addClass('no-aos-animation')
   }
 
-  const observer = lozad('.lozad', {
-    loaded: (el) => {
-      el.classList.add('loaded')
-    }
-  })
-  observer.observe()
+  if ($openSecondaryMenu.length > 0) {
+    const template = document.getElementById('secondary-navigation-template')
+
+    secondaryMenuTippy = tippy('.js-open-secondary-menu', {
+      content: template.innerHTML,
+      allowHTML: true,
+      arrow: true,
+      trigger: 'click',
+      interactive: true,
+      onShow() {
+        toggleDesktopTopbarOverflow(true)
+      },
+      onHidden() {
+        toggleDesktopTopbarOverflow(false)
+      }
+    })
+  }
 
   tippy('.js-tooltip')
 
   shave('.js-article-card-title', 100)
   shave('.js-article-card-title-no-image', 250)
 
+  checkForActionParameter()
   trySearchFeature()
 })
