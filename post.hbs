@@ -41,7 +41,6 @@ into the {body} of the default.hbs template --}}
               <h1 class="m-heading__title in-post">{{title}}</h1>
               <div class="m-heading__meta">
                 {{#if primary_tag}}
-<<<<<<< HEAD
                 <a href="{{primary_tag.url}}" class="m-heading__meta__tag">{{primary_tag.name}}</a>
                 <div class="only-desktop">
                   {{#foreach tags}}
@@ -52,10 +51,6 @@ into the {body} of the default.hbs template --}}
                   {{/foreach}}
                 </div>
                 <span class="m-heading__meta__divider">&bull;</span>
-=======
-                  <a href="{{primary_tag.url}}" class="m-heading__meta__tag">{{primary_tag.name}}</a>
-                  <span class="m-heading__meta__divider" aria-hidden="true">&bull;</span>
->>>>>>> source
                 {{/if}}
                 <span class="m-heading__meta__time">{{date published_at}}</span>
                 <span style="display: none;">
