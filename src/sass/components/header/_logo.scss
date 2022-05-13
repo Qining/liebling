@@ -8,6 +8,14 @@
     height: 100%;
     object-fit: contain;
     border-radius: 50%;
+
+    &.m-logo__image-light {
+      display: var(--toggle-darkmode-button-display-moon);
+    }
+
+    &.m-logo__image-dark {
+      display: var(--toggle-darkmode-button-display-sun);
+    }
   }
 
   &.in-mobile-topbar {

@@ -2,10 +2,10 @@
   "author": {
     "email": "jerry@wjz.im",
     "name": "Jerry Zhu",
-    "url": "https://blog.xqopen.com"
+    "url": "https://imho.plus"
   },
   "config": {
-    "posts_per_page": 9,
+    "posts_per_page": 12,
     "image_sizes": {
       "xxs": {
         "width": 30
@@ -25,13 +25,40 @@
       "xl": {
         "width": 2000
       }
+    },
+    "custom": {
+      "dark_mode_logo": {
+        "type": "image"
+      },
+      "search_api_key": {
+        "type": "text"
+      },
+      "disable_fade_animation": {
+        "type": "boolean",
+        "default": false
+      },
+      "use_custom_cta": {
+        "type": "boolean",
+        "default": false,
+        "group": "homepage"
+      },
+      "custom_cta_text": {
+        "type": "text",
+        "default": "Subscribe",
+        "group": "homepage"
+      },
+      "custom_cta_url": {
+        "type": "text",
+        "default": "/newsletter",
+        "group": "homepage"
+      }
     }
   },
-  "demo": "https://blog.xqopen.com",
+  "demo": "https://imho.plus",
   "description": "Beautiful and clean theme that is easy and comfortable to use. (modified version)",
   "engines": {
-    "ghost": ">=3.0.0",
-    "ghost-api": "v3"
+    "ghost": ">=4.0.0",
+    "ghost-api": "v4"
   },
   "gpm": {
     "type": "theme",
@@ -54,5 +81,5 @@
     "desktop": "assets/screenshot-desktop.jpg",
     "mobile": "assets/screenshot-mobile.jpg"
   },
-  "version": "0.8.6-m"
+  "version": "1.5.2m"
 }

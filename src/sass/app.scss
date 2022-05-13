@@ -15,7 +15,6 @@
 @import "components/ui/section-title";
 @import "components/ui/small-text";
 @import "components/ui/not-found";
-@import "components/ui/alert";
 @import "components/header/header";
 @import "components/header/mobile-topbar";
 @import "components/header/logo";
@@ -47,8 +46,6 @@
 @import "components/footer";
 
 @import "libs/aos/aos";
-
-@import "libs/glide/glide.core";
 
 @import '../node_modules/tocbot/src/scss/tocbot-core';
 @import '../node_modules/tocbot/src/scss/tocbot-default-theme';

@@ -1,5 +1,11 @@
 let mix = require('laravel-mix');
 
+mix.options({
+  terser: {
+    extractComments: false,
+  }
+});
+
 mix.webpackConfig({
   module: {
     rules: [
@@ -35,7 +41,7 @@ mix.js('js/helpers.js', 'js/')
     processCssUrls: false
   })
   .copy('sass/fonts/icomoon/*.*', '../assets/fonts/icomoon/')
-  .copy('sass/fonts/source-sans-pro/*.*', '../assets/fonts/source-sans-pro/')
+  .copyDirectory('sass/fonts/source-sans-pro/', '../assets/fonts/source-sans-pro/')
   .copy('js/vendor/content-api.min.js', '../assets/js/vendor/')
   .browserSync({
     proxy: "localhost:2368",
