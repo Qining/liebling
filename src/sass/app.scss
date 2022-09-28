@@ -5,6 +5,7 @@
 @import "common/helpers";
 @import "common/icons";
 @import "common/global";
+@import "common/animations";
 
 @import "layouts/wrapper";
 @import "layouts/content";
@@ -45,7 +46,6 @@
 @import "components/search/result";
 @import "components/footer";
 
-@import "libs/aos/aos";
 
 @import '../node_modules/tocbot/src/scss/tocbot-core';
 @import '../node_modules/tocbot/src/scss/tocbot-default-theme';

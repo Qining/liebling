@@ -50,6 +50,7 @@
   "Subscribe to {blogtitle}": "Subscribe to {blogtitle}",
   "Subscribed!": "Subscribed!",
   "Success! Your account is fully activated, you now have access to all content.": "Success! Your account is fully activated, you now have access to all content.",
+  "Table of Contents": "Table of Contents",
   "Tags": "Tags",
   "Toggle dark mode": "Toggle light/dark mode",
   "Type to search": "Type to search",
@@ -60,6 +61,5 @@
   "Your email address": "Your email address",
   "of": "of",
   "with the email address": "with the email address",
-  "with this tag": "with this tag",
-  "Table of Contents": "Table of Contents"
+  "with this tag": "with this tag"
 }

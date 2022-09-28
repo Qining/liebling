@@ -28,6 +28,7 @@
   "Subscribe to our newsletter": "订阅我们的新内容",
   "Subscribe to {blogtitle}": "订阅 {blogtitle}",
   "Subscribed!": "订阅成功!",
+  "Table of Contents": "文章目录",
   "Tags": "标签",
   "Toggle dark mode": "切换到暗色模式",
   "Type to search": "输入搜索内容",
@@ -36,6 +37,5 @@
   "Your email address": "你的 Email 地址",
   "of": " / ",
   "with the email address": "在此邮箱",
-  "with this tag": "包含此标签",
-  "Table of Contents": "文章目录"
+  "with this tag": "包含此标签"
 }
